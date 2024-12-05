@@ -11,7 +11,7 @@ public class UltrasonicSensor extends Thread {
 	public static float distance;
 	public static float securityDistance = 9;
 	public EV3UltrasonicSensor sonicSensor;
-	DataExchange DE = new DataExchange(); 
+	DataExchange DE = new DataExchange();
 
     public UltrasonicSensor(DataExchange DE) {
        sonicSensor = new EV3UltrasonicSensor(SensorPort.S4);

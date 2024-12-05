@@ -6,27 +6,61 @@ import lejos.hardware.motor.Motor;
 import lejos.robotics.Color;
 import lejos.utility.Delay;
 
+
+//testing codeowner file permissions
+
 //testing codeowner
 
-public class LineFollower extends Thread {
-    public static final int SPEED = 300;
-    public static final float BLACK_THRESHOLD = 0.1f;
-    public static int TURN_ANGLE = 220;
-    DataExchange DE; 
-    
 
+public class LineFollower extends Thread {
+	
+	//DataExchange DE = new DataExchange();
+	
+	
+	/*public int SPEED = DE.getSpeed();
+	public int TURN_ANGLE = DE.getTurnangle();
+	public final int MAX_OBSTACLES = DE.getMaxobs();
+	 */
+    
+    public final float BLACK_THRESHOLD = 0.1f;
+
+    DataExchange DE;
+    //Connect connect;
+    
     public LineFollower(DataExchange DE) { 
     	this.DE = DE; 
+    	//this.connect = connect;
     } 
 
     public void run()
     {
-    	System.out.println("Operation WALL-E initiated");
-        
-    	final int MAX_OBSTACLES = 2;
+    	
+    	int SPEED = 300;// = DE.getSpeed();
+    	int TURN_ANGLE = 220;//DE.getTurnangle();
+    	final int MAX_OBSTACLES = 2;//DE.getMaxobs();
+    	
+    	System.out.println("INITIALIZING OPERATION WALL-E");
+    	
     	int obstacleCount = 0;
     	
-        while(!Button.ESCAPE.isDown() || obstacleCount < MAX_OBSTACLES) 
+    	
+    	/*while (DE.getSpeed() == 0 || DE.getTurnangle() == 0 || DE.getMaxobs() == 0)
+    		
+    	{
+    		System.out.println(DE.getSpeed() + " . " + DE.getTurnangle() + " . " + DE.getMaxobs());
+    	}*/
+    	
+    	/*Put here another while loop
+    	check if the values are NOT 0
+    	if NOT the break
+    	end while*/
+    	
+    	//OR IMPLEMEND THE GET METHODDS INSIDE THE OTHER WHILE LOOP (LIKE FOR SPEED) 
+    	
+    	
+    	
+    	
+        while(!Button.ESCAPE.isDown() || obstacleCount < DE.getMaxobs() ) 
         {
         	float[] colorSample = DataExchange.colorSample;
             
@@ -34,8 +68,8 @@ public class LineFollower extends Thread {
             {
             	if(colorSample [0] == Color.BLACK) {
                 	// On the line, move straight
-                	Motor.A.setSpeed(SPEED);
-                	Motor.B.setSpeed(SPEED);
+                	Motor.A.setSpeed(DE.getSpeed());
+                	Motor.B.setSpeed(DE.getSpeed());
                 	Motor.A.forward();
                     Motor.B.forward();
             	} 
@@ -43,16 +77,16 @@ public class LineFollower extends Thread {
                 	// Off the line, adjust direction
                 	if(colorSample[0] < BLACK_THRESHOLD) {
                     	// Too far to the right, turn left
-                    	Motor.A.setSpeed(SPEED / 4);
-                    	Motor.B.setSpeed(SPEED);
+                    	Motor.A.setSpeed(DE.getSpeed() / 4);
+                    	Motor.B.setSpeed(DE.getSpeed());
                     	Motor.A.forward();
                         Motor.B.forward();
                 	} 
                 	else if (colorSample[0] > BLACK_THRESHOLD){
 
                     	// Too far to the left, turn right
-                    	Motor.A.setSpeed(SPEED);
-                    	Motor.B.setSpeed(SPEED / 2);
+                    	Motor.A.setSpeed(DE.getSpeed());
+                    	Motor.B.setSpeed(DE.getSpeed() / 2);
                     	Motor.A.forward();
                         Motor.B.forward();
                 	}
@@ -62,7 +96,7 @@ public class LineFollower extends Thread {
             	
             	System.out.println("Obstacle detected!");
             	obstacleCount++;
-            	if (obstacleCount == MAX_OBSTACLES) { // stop after the second encounter
+            	if (obstacleCount == DE.getMaxobs()) { // stop after the second encounter
                     Motor.A.stop();
                     Motor.B.stop();
                     interrupt();
@@ -92,8 +126,8 @@ public class LineFollower extends Thread {
     					//return;
                     }
                 }
-            	Motor.A.setSpeed(SPEED);
-            	Motor.B.setSpeed(SPEED); // it adjust the wheels into straightforward position, bc linefollower confused it before
+            	Motor.A.setSpeed(DE.getSpeed());
+            	Motor.B.setSpeed(DE.getSpeed()); // it adjust the wheels into straightforward position, bc linefollower confused it before
             	Motor.A.forward(); //we set it to move forward just a bit to make sure it gets straight
                 Motor.B.forward();
                 Delay.msDelay(75);
@@ -101,10 +135,10 @@ public class LineFollower extends Thread {
                 Motor.A.stop();
                 Motor.B.stop();
                 //actual avoidance happening
-                Motor.A.rotate(-TURN_ANGLE); //turns out sharply so that it can avoid the obstacle
+                Motor.A.rotate(-DE.getTurnangle()); //turns out sharply so that it can avoid the obstacle
                 Delay.msDelay(10); 			//       actual avoidance happening
-                Motor.A.setSpeed(SPEED/4);  //sets the wheels for a turning angle 
-                Motor.B.setSpeed(SPEED);
+                Motor.A.setSpeed(DE.getSpeed()/4);  //sets the wheels for a turning angle 
+                Motor.B.setSpeed(DE.getSpeed());
                 //Motor.A.rotate(-TURN_ANGLE/4);
             }
         //Motor.A.close();

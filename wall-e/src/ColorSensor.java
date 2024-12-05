@@ -4,8 +4,8 @@ import lejos.hardware.port.SensorPort;
 
 public class ColorSensor extends Thread{
 
-    public static EV3ColorSensor colorSensor;
-    DataExchange DE = new DataExchange(); 
+	public static EV3ColorSensor colorSensor;
+    DataExchange DE = new DataExchange();
 
 	public ColorSensor (DataExchange DE) {
         colorSensor = new EV3ColorSensor(SensorPort.S3);

@@ -36,3 +36,4 @@ target/
 # Gradle files
 .gradle/
 build/
+/bin/
